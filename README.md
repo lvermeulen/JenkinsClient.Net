@@ -4,7 +4,7 @@
  [![license](https://img.shields.io/github/license/lvermeulen/JenkinsClient.Net.svg?maxAge=2592000)](https://github.com/lvermeulen/JenkinsClient.Net/blob/master/LICENSE) [![NuGet](https://img.shields.io/nuget/vpre/JenkinsClient.Net.svg?maxAge=2592000)](https://www.nuget.org/packages/JenkinsClient.Net/) 
  ![](https://img.shields.io/badge/.net-4.6-yellowgreen.svg) ![](https://img.shields.io/badge/netstandard-1.6-yellowgreen.svg)
 
-C# Client for [Jenkins](https://jenkins.io)
+C# client for [Jenkins](https://jenkins.io)
 
 ## Features
 * [ ] System

@@ -14,6 +14,7 @@ namespace JenkinsClient.Net
 	public partial class JenkinsClient
 	{
 		private static readonly ISerializer s_serializer = new NewtonsoftJsonSerializer(new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+		private static readonly HttpContent s_emptyHttpContent = new StringContent("");
 
 		private readonly Url _url;
 		private readonly AuthenticationMethod _auth;

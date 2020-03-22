@@ -10,11 +10,9 @@ namespace JenkinsClient.Net
 	{
 		public IFlurlRequest GetSystemUrl() => GetBaseUrl("api/json");
 
-		public IFlurlRequest GetSystemUrl(string path) => GetSystemUrl().AppendPathSegment(path);
-
 		public async Task<SystemInformation> GetSystemInformationAsync()
 		{
-			return await GetJobsUrl()
+			return await GetSystemUrl()
 				.GetJsonAsync<SystemInformation>()
 				.ConfigureAwait(false);
 		}
@@ -31,6 +29,42 @@ namespace JenkinsClient.Net
 			}
 
 			return null;
+		}
+
+		public async Task<bool> QuietDownAsync()
+		{
+			var response = await GetBaseUrl("quietDown")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<bool> CancelQuietDownAsync()
+		{
+			var response = await GetBaseUrl("cancelQuietDown")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<bool> RestartAsync()
+		{
+			var response = await GetBaseUrl("restart")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<bool> SafeRestartAsync()
+		{
+			var response = await GetBaseUrl("safeRestart")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
 		}
 	}
 }
