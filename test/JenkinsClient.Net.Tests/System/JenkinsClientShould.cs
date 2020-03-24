@@ -16,7 +16,16 @@ namespace JenkinsClient.Net.Tests
 		[Fact]
 		public async Task GetVersionAsync()
 		{
+			await _client.SetSecurityCrumbAsync().ConfigureAwait(false);
+
 			string result = await _client.GetVersionAsync().ConfigureAwait(false);
+			Assert.NotNull(result);
+		}
+
+		[Fact]
+		public async Task GetSecurityCrumbAsync()
+		{
+			var result = await _client.GetSecurityCrumbAsync().ConfigureAwait(false);
 			Assert.NotNull(result);
 		}
 	}

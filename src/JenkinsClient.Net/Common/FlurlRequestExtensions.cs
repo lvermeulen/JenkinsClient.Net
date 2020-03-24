@@ -1,9 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Flurl;
 using Flurl.Http;
+using JenkinsClient.Net.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -65,6 +69,16 @@ namespace JenkinsClient.Net.Common
 		{
 			var jproperty = await request.GetJsonNodeAsync(nodeName, cancellationToken, completionOption).ConfigureAwait(false);
 			return jproperty.Value.ToObject<T>();
+		}
+
+		public static IFlurlRequest IncludeSecurityCrumb(this IFlurlRequest request, JenkinsClient client)
+		{
+			if (client.SecurityCrumb != null)
+			{
+				return request.WithHeader(client.SecurityCrumb.CrumbRequestField, client.SecurityCrumb.Crumb);
+			}
+
+			return request;
 		}
 	}
 }

@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
+using JenkinsClient.Net.Common;
 using JenkinsClient.Net.Common.Authentication;
 using JenkinsClient.Net.Common.Models;
+using JenkinsClient.Net.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -18,6 +20,8 @@ namespace JenkinsClient.Net
 
 		private readonly Url _url;
 		private readonly AuthenticationMethod _auth;
+
+		public SecurityCrumb SecurityCrumb { get; set; }
 
 		private readonly Func<HttpCall, Task> _errorHandlerAsync = async call =>
 		{
@@ -40,16 +44,15 @@ namespace JenkinsClient.Net
 			_url = url;
 		}
 
-		public JenkinsClient(string url, BasicAuthentication basic)
-			: this(url)
+		public IFlurlRequest GetBaseUrl()
 		{
-			_auth = basic;
+			return new Url(_url)
+				.ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
+				.WithAuthentication(_auth)
+				.IncludeSecurityCrumb(this);
 		}
 
-		public IFlurlRequest GetBaseUrl(string path) => new Url(_url)
-			.AppendPathSegment(path)
-			.ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
-			.WithAuthentication(_auth);
+		public IFlurlRequest GetBaseUrl(string path) => GetBaseUrl().AppendPathSegment(path);
 
 		private async Task<TResult> ReadResponseContentAsync<TResult>(HttpResponseMessage responseMessage, Func<string, TResult> contentHandler = null)
 		{

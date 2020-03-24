@@ -19,7 +19,7 @@ namespace JenkinsClient.Net
 
 		public async Task<string> GetVersionAsync()
 		{
-			var response = await GetBaseUrl("/")
+			var response = await GetBaseUrl()
 				.GetAsync()
 				.ConfigureAwait(false);
 
@@ -29,6 +29,19 @@ namespace JenkinsClient.Net
 			}
 
 			return null;
+		}
+
+		public async Task<SecurityCrumb> GetSecurityCrumbAsync()
+		{
+			return await GetBaseUrl()
+				.AppendPathSegment("crumbIssuer/api/json")
+				.GetJsonAsync<SecurityCrumb>()
+				.ConfigureAwait(false);
+		}
+
+		public async Task SetSecurityCrumbAsync()
+		{
+			SecurityCrumb = await GetSecurityCrumbAsync().ConfigureAwait(false);
 		}
 
 		public async Task<bool> QuietDownAsync()
