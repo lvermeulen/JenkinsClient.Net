@@ -44,15 +44,17 @@ namespace JenkinsClient.Net
 			_url = url;
 		}
 
-		public IFlurlRequest GetBaseUrl()
+		public IFlurlRequest GetBaseUrl(string url)
 		{
-			return new Url(_url)
+			return new Url(url)
 				.ConfigureRequest(settings => settings.JsonSerializer = s_serializer)
 				.WithAuthentication(_auth)
 				.IncludeSecurityCrumb(this);
 		}
 
-		public IFlurlRequest GetBaseUrl(string path) => GetBaseUrl().AppendPathSegment(path);
+		public IFlurlRequest GetBaseUrl() => GetBaseUrl(_url);
+
+		public IFlurlRequest GetBaseUrl(string url, string path) => GetBaseUrl(url).AppendPathSegment(path);
 
 		private async Task<TResult> ReadResponseContentAsync<TResult>(HttpResponseMessage responseMessage, Func<string, TResult> contentHandler = null)
 		{

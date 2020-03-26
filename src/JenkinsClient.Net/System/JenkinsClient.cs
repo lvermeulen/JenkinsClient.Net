@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Flurl.Http;
 using JenkinsClient.Net.Models;
@@ -8,19 +9,23 @@ namespace JenkinsClient.Net
 {
 	public partial class JenkinsClient
 	{
-		public IFlurlRequest GetSystemUrl() => GetBaseUrl("api/json");
+		public IFlurlRequest GetSystemUrl() => GetBaseUrl();
+
+		public IFlurlRequest GetSystemApiUrl() => GetSystemUrl().AppendPathSegment("api/json");
+
+		public IFlurlRequest GetSystemApiUrl(string path) => GetSystemUrl().AppendPathSegments(path, "api/json");
 
 		public async Task<SystemInformation> GetSystemInformationAsync()
 		{
-			return await GetSystemUrl()
+			return await GetSystemApiUrl()
 				.GetJsonAsync<SystemInformation>()
 				.ConfigureAwait(false);
 		}
 
 		public async Task<string> GetVersionAsync()
 		{
-			var response = await GetBaseUrl()
-				.GetAsync()
+			var response = await GetSystemApiUrl()
+				.GetAsync(completionOption: HttpCompletionOption.ResponseHeadersRead)
 				.ConfigureAwait(false);
 
 			if (response.Headers.TryGetValues("X-Jenkins", out var values))
@@ -33,8 +38,7 @@ namespace JenkinsClient.Net
 
 		public async Task<SecurityCrumb> GetSecurityCrumbAsync()
 		{
-			return await GetBaseUrl()
-				.AppendPathSegment("crumbIssuer/api/json")
+			return await GetSystemApiUrl("crumbIssuer")
 				.GetJsonAsync<SecurityCrumb>()
 				.ConfigureAwait(false);
 		}
@@ -46,7 +50,8 @@ namespace JenkinsClient.Net
 
 		public async Task<bool> QuietDownAsync()
 		{
-			var response = await GetBaseUrl("quietDown")
+			var response = await GetSystemUrl()
+				.AppendPathSegment("quietDown")
 				.PostAsync(s_emptyHttpContent)
 				.ConfigureAwait(false);
 
@@ -55,7 +60,8 @@ namespace JenkinsClient.Net
 
 		public async Task<bool> CancelQuietDownAsync()
 		{
-			var response = await GetBaseUrl("cancelQuietDown")
+			var response = await GetSystemUrl()
+				.AppendPathSegment("cancelQuietDown")
 				.PostAsync(s_emptyHttpContent)
 				.ConfigureAwait(false);
 
@@ -64,7 +70,8 @@ namespace JenkinsClient.Net
 
 		public async Task<bool> RestartAsync()
 		{
-			var response = await GetBaseUrl("restart")
+			var response = await GetSystemUrl()
+				.AppendPathSegment("restart")
 				.PostAsync(s_emptyHttpContent)
 				.ConfigureAwait(false);
 
@@ -73,7 +80,8 @@ namespace JenkinsClient.Net
 
 		public async Task<bool> SafeRestartAsync()
 		{
-			var response = await GetBaseUrl("safeRestart")
+			var response = await GetSystemUrl()
+				.AppendPathSegment("safeRestart")
 				.PostAsync(s_emptyHttpContent)
 				.ConfigureAwait(false);
 
