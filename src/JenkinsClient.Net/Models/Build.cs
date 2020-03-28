@@ -2,7 +2,7 @@
 {
 	public class Build : HasClass
 	{
-		public int? Number { get; set; }
+		public int Number { get; set; }
 		public string Url { get; set; }
 	}
 }

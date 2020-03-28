@@ -16,8 +16,6 @@ namespace JenkinsClient.Net
 
 		public IFlurlRequest GetJobsApiUrl(string url) => GetBaseUrl(url, "api/json");
 
-		public IFlurlRequest GetJobsUrl(string url, string path) => GetJobsApiUrl(url).AppendPathSegments(path, "api/json");
-
 		public async Task<IEnumerable<Job>> GetJobsAsync()
 		{
 			var systemInformation = await GetSystemInformationAsync().ConfigureAwait(false);

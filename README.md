@@ -25,6 +25,14 @@ C# client for [Jenkins](https://jenkins.io)
     * [X] Build
     * [X] Build with parameters
     * [X] Enable/disable
-* [ ] Builds
+* [X] Builds
+    * [X] Build number
+    * [X] Build timestamp
+    * [X] Build console output
+    * [X] Build HTML console output
 * [ ] Queue
 * [ ] Artifacts
+* [ ] Plugin manager
+    * [ ] Upload
+    * [ ] Prevalidate configuration
+    * [ ] Install necessary plugins

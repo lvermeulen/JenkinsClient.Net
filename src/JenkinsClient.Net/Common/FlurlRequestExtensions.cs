@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using Flurl;
 using Flurl.Http;
-using JenkinsClient.Net.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -76,6 +73,16 @@ namespace JenkinsClient.Net.Common
 			if (client.SecurityCrumb != null)
 			{
 				return request.WithHeader(client.SecurityCrumb.CrumbRequestField, client.SecurityCrumb.Crumb);
+			}
+
+			return request;
+		}
+
+		public static IFlurlRequest If(this IFlurlRequest request, bool condition, Func<IFlurlRequest, IFlurlRequest> flurlRequestFunction)
+		{
+			if (condition)
+			{
+				return flurlRequestFunction(request);
 			}
 
 			return request;
