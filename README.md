@@ -13,12 +13,18 @@ C# client for [Jenkins](https://jenkins.io)
 * [X] System
     * [X] Information
     * [X] Version
-    * [X] Security Crumb
-    * [X] Quiet Down
-    * [X] Cancel Quiet Down
+    * [X] Security crumb
+    * [X] Quiet down
+    * [X] Cancel quiet down
     * [X] Restart
-    * [X] Safe Restart
-* [ ] Jobs
+    * [X] Safe restart
+* [X] Jobs
+    * [X] Fetch/update Configuration
+    * [X] Delete
+    * [X] Fetch/update description
+    * [X] Build
+    * [X] Build with parameters
+    * [X] Enable/disable
 * [ ] Builds
 * [ ] Queue
 * [ ] Artifacts

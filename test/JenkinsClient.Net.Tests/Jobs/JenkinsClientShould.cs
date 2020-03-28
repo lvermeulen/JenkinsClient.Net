@@ -34,5 +34,33 @@ namespace JenkinsClient.Net.Tests
 			var result = await _client.GetJobInformationAsync(firstResult.Url).ConfigureAwait(false);
 			Assert.NotNull(result);
 		}
+
+		[Fact]
+		public async Task GetJobConfigurationAsync()
+		{
+			var results = await _client.GetJobsAsync().ConfigureAwait(false);
+			var firstResult = results.FirstOrDefault();
+			if (firstResult == null)
+			{
+				return;
+			}
+
+			var result = await _client.GetJobConfigurationAsync(firstResult.Name).ConfigureAwait(false);
+			Assert.NotNull(result);
+		}
+
+		[Fact]
+		public async Task GetJobDescriptionAsync()
+		{
+			var results = await _client.GetJobsAsync().ConfigureAwait(false);
+			var firstResult = results.FirstOrDefault();
+			if (firstResult == null)
+			{
+				return;
+			}
+
+			var result = await _client.GetJobDescriptionAsync(firstResult.Name).ConfigureAwait(false);
+			Assert.NotNull(result);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
-using Flurl;
 using Flurl.Http;
 using JenkinsClient.Net.Models;
 
@@ -9,9 +9,14 @@ namespace JenkinsClient.Net
 {
 	public partial class JenkinsClient
 	{
-		public IFlurlRequest GetJobsUrl() => GetBaseUrl("api/json");
+		public IFlurlRequest GetJobUrl() => GetBaseUrl().AppendPathSegment("job");
 
-		public IFlurlRequest GetJobsUrl(string path) => GetJobsUrl().AppendPathSegment(path);
+		// ReSharper disable once CoVariantArrayConversion
+		public IFlurlRequest GetJobUrl(params string[] paths) => GetJobUrl().AppendPathSegments(paths);
+
+		public IFlurlRequest GetJobsApiUrl(string url) => GetBaseUrl(url, "api/json");
+
+		public IFlurlRequest GetJobsUrl(string url, string path) => GetJobsApiUrl(url).AppendPathSegments(path, "api/json");
 
 		public async Task<IEnumerable<Job>> GetJobsAsync()
 		{
@@ -34,10 +39,103 @@ namespace JenkinsClient.Net
 
 		public async Task<JobInformation> GetJobInformationAsync(string jobUrl)
 		{
-			return await jobUrl
-				.AppendPathSegment("api/json")
+			return await GetJobsApiUrl(jobUrl)
 				.GetJsonAsync<JobInformation>()
 				.ConfigureAwait(false);
+		}
+
+		public async Task<string> GetJobConfigurationAsync(string jobName)
+		{
+			return await GetJobUrl(jobName, "config.xml")
+				.GetStringAsync()
+				.ConfigureAwait(false);
+		}
+
+		public async Task<bool> SetJobConfigurationAsync(string jobName, string xml)
+		{
+			var response = await GetJobUrl(jobName, "config.xml")
+				.PostAsync(new StringContent(xml))
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<bool> DeleteJobAsync(string jobName)
+		{
+			var response = await GetJobUrl(jobName, "doDelete")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<string> GetJobDescriptionAsync(string jobName)
+		{
+			return await GetJobUrl(jobName, "description")
+				.GetStringAsync()
+				.ConfigureAwait(false);
+		}
+
+		public async Task<bool> SetJobDescriptionAsync(string jobName, string description)
+		{
+			var data = new
+			{
+				description
+			};
+
+			var response = await GetJobUrl(jobName, "description")
+				.PostUrlEncodedAsync(data)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<string> StartBuildAsync(string jobName)
+		{
+			var response = await GetJobUrl(jobName, "build")
+				.SetQueryParam("delay", "0sec")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return response.Headers.Location.ToString();
+		}
+
+		public async Task<string> StartBuildWithParametersAsync(string jobName, IDictionary<string, string> parameters)
+		{
+			var response = await GetJobUrl(jobName, "buildWithParameters")
+				.SetQueryParams(parameters)
+				.SetQueryParam("delay", "0sec")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return response.Headers.Location.ToString();
+		}
+
+		public async Task<bool> PollScmBuildAsync(string jobName)
+		{
+			var response = await GetJobUrl(jobName, "polling")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<bool> EnableJobAsync(string jobName)
+		{
+			var response = await GetJobUrl(jobName, "enable")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<bool> DisableJobAsync(string jobName)
+		{
+			var response = await GetJobUrl(jobName, "disable")
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
 		}
 	}
 }

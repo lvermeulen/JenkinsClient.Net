@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using Flurl.Http.Configuration;
+using HtmlAgilityPack;
 using JenkinsClient.Net.Common;
 using JenkinsClient.Net.Common.Authentication;
 using JenkinsClient.Net.Common.Models;
@@ -31,10 +32,13 @@ namespace JenkinsClient.Net
 			}
 
 			string body = await call.Response.Content.ReadAsStringAsync().ConfigureAwait(false);
-			var sonarQubeErrors = call.FlurlRequest.Settings.JsonSerializer.Deserialize<JenkinsError>(body);
-			var exception = new InvalidOperationException(sonarQubeErrors.Error);
+			var html = new HtmlDocument();
+			html.LoadHtml(body);
+			string error = html.DocumentNode
+				.SelectSingleNode("/html/head/title")
+				.InnerText;
 
-			throw exception;
+			throw new InvalidOperationException(error);
 		};
 
 		public JenkinsClient(string url)
