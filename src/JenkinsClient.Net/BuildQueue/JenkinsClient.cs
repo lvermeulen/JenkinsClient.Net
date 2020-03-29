@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Flurl.Http;
-using JenkinsClient.Net.Common;
 using JenkinsClient.Net.Models;
 
 // ReSharper disable once CheckNamespace

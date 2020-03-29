@@ -7,7 +7,6 @@ using Flurl.Http.Configuration;
 using HtmlAgilityPack;
 using JenkinsClient.Net.Common;
 using JenkinsClient.Net.Common.Authentication;
-using JenkinsClient.Net.Common.Models;
 using JenkinsClient.Net.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -74,27 +73,13 @@ namespace JenkinsClient.Net
 			return content.Length == 0;
 		}
 
-		private async Task HandleErrorsAsync(HttpResponseMessage response)
-		{
-			if (!response.IsSuccessStatusCode)
-			{
-				var jenkinsError = await ReadResponseContentAsync<JenkinsError>(response).ConfigureAwait(false);
-
-				// ReSharper disable once AssignNullToNotNullAttribute
-				string errorMessage = jenkinsError.Error;
-				throw new InvalidOperationException($"Http request failed ({(int)response.StatusCode} - {response.StatusCode}):\n{errorMessage}");
-			}
-		}
-
 		private async Task<TResult> HandleResponseAsync<TResult>(HttpResponseMessage responseMessage, Func<string, TResult> contentHandler = null)
 		{
-			await HandleErrorsAsync(responseMessage).ConfigureAwait(false);
 			return await ReadResponseContentAsync(responseMessage, contentHandler).ConfigureAwait(false);
 		}
 
 		private async Task<bool> HandleResponseAsync(HttpResponseMessage responseMessage)
 		{
-			await HandleErrorsAsync(responseMessage).ConfigureAwait(false);
 			return await ReadResponseContentAsync(responseMessage).ConfigureAwait(false);
 		}
 	}

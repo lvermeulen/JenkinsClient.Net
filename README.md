@@ -34,7 +34,7 @@ C# client for [Jenkins](https://jenkins.io)
     * [X] Build HTML console output
 * [X] Build queue
 * [ ] Artifacts
-* [ ] Plugin manager
-    * [ ] Upload
-    * [ ] Prevalidate configuration
-    * [ ] Install necessary plugins
+* [X] Plugin manager
+    * [X] Upload
+    * [X] Prevalidate configuration
+    * [X] Install necessary plugins

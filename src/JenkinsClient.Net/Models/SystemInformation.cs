@@ -1,11 +1,16 @@
 ﻿using System.Collections.Generic;
+using JenkinsClient.Net.Common.Converters;
+using Newtonsoft.Json;
 
 namespace JenkinsClient.Net.Models
 {
 	public class SystemInformation : HasClass
 	{
 		public IEnumerable<AssignedLabel> AssignedLabels { get; set; }
-		public string Mode { get; set; }
+
+		[JsonConverter(typeof(JenkinsModesConverter))]
+		public JenkinsModes Mode { get; set; }
+
 		public string NodeDescription { get; set; }
 		public string NodeName { get; set; }
 		public int? NumExecutors { get; set; }

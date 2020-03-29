@@ -5,7 +5,6 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Flurl.Http;
 using JenkinsClient.Net.Common;
-using JenkinsClient.Net.Models;
 
 // ReSharper disable once CheckNamespace
 namespace JenkinsClient.Net
