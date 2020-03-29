@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Flurl.Http;
 using JenkinsClient.Net.Common;
+using JenkinsClient.Net.Models;
 
 // ReSharper disable once CheckNamespace
 namespace JenkinsClient.Net
@@ -13,11 +14,7 @@ namespace JenkinsClient.Net
 	{
 		public IFlurlRequest GetBuildUrl(string jobName, int buildNumber) => GetJobUrl().AppendPathSegment(jobName).AppendPathSegment(buildNumber);
 
-		public IFlurlRequest GetBuildUrl(string jobName, int buildNumber, string path) => GetJobUrl(jobName, buildNumber.ToString()).AppendPathSegment(path);
-
-		//public IFlurlRequest GetBuildApiUrl() => GetBuildUrl().AppendPathSegment("api/json");
-
-		//public IFlurlRequest GetBuildApiUrl(string path) => GetBuildUrl().AppendPathSegments(path, "api/json");
+		public IFlurlRequest GetBuildUrl(string jobName, int buildNumber, string path) => GetBuildUrl(jobName, buildNumber).AppendPathSegment(path);
 
 		public async Task<string> GetBuildNumberAsync(string jobName, int buildNumber)
 		{

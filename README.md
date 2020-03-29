@@ -21,18 +21,18 @@ C# client for [Jenkins](https://jenkins.io)
     * [X] Restart
     * [X] Safe restart
 * [X] Jobs
-    * [X] Fetch/update Configuration
-    * [X] Delete
-    * [X] Fetch/update description
-    * [X] Build
-    * [X] Build with parameters
-    * [X] Enable/disable
+    * [X] Fetch/update job configuration
+    * [X] Delete job
+    * [X] Fetch/update job description
+    * [X] Build job
+    * [X] Build job with parameters
+    * [X] Enable/disable job
 * [X] Builds
     * [X] Build number
     * [X] Build timestamp
     * [X] Build console output
     * [X] Build HTML console output
-* [ ] Queue
+* [X] Build queue
 * [ ] Artifacts
 * [ ] Plugin manager
     * [ ] Upload
