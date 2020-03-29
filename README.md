@@ -14,6 +14,8 @@ C# client for [Jenkins](https://jenkins.io)
     * [X] Information
     * [X] Version
     * [X] Security crumb
+    * [X] Create job
+    * [X] Copy job
     * [X] Quiet down
     * [X] Cancel quiet down
     * [X] Restart

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Flurl.Http;
@@ -10,6 +11,8 @@ namespace JenkinsClient.Net
 	public partial class JenkinsClient
 	{
 		public IFlurlRequest GetSystemUrl() => GetBaseUrl();
+
+		public IFlurlRequest GetSystemUrl(string path) => GetSystemUrl().AppendPathSegment(path);
 
 		public IFlurlRequest GetSystemApiUrl() => GetSystemUrl().AppendPathSegment("api/json");
 
@@ -46,6 +49,34 @@ namespace JenkinsClient.Net
 		public async Task SetSecurityCrumbAsync()
 		{
 			SecurityCrumb = await GetSecurityCrumbAsync().ConfigureAwait(false);
+		}
+
+		public async Task<bool> CreateJobAsync(string jobName, string xml)
+		{
+			var response = await GetSystemUrl("createItem")
+				.WithHeader("Content-Type", "application/xml")
+				.SetQueryParam("name", jobName)
+				.PostAsync(new StringContent(xml))
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
+		}
+
+		public async Task<bool> CopyJobAsync(string fromJobName, string toJobName)
+		{
+			var queryParamValues = new Dictionary<string, object>
+			{
+				["from"] = fromJobName,
+				["name"] = toJobName,
+				["mode"] = "copy"
+			};
+
+			var response = await GetSystemUrl("createItem")
+				.SetQueryParams(queryParamValues)
+				.PostAsync(s_emptyHttpContent)
+				.ConfigureAwait(false);
+
+			return await HandleResponseAsync(response).ConfigureAwait(false);
 		}
 
 		public async Task<bool> QuietDownAsync()
