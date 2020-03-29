@@ -10,9 +10,9 @@ namespace JenkinsClient.Net
 {
 	public partial class JenkinsClient
 	{
-		public IFlurlRequest GetPluginManagerUrl() => GetBaseUrl().AppendPathSegment("pluginManager");
+		private IFlurlRequest GetPluginManagerUrl() => GetBaseUrl().AppendPathSegment("pluginManager");
 
-		public IFlurlRequest GetPluginManagerUrl(string path) => GetPluginManagerUrl().AppendPathSegment(path);
+		private IFlurlRequest GetPluginManagerUrl(string path) => GetPluginManagerUrl().AppendPathSegment(path);
 
 		public async Task<bool> UploadPluginAsync(string pluginFileName)
 		{

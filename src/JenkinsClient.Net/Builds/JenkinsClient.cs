@@ -11,9 +11,9 @@ namespace JenkinsClient.Net
 {
 	public partial class JenkinsClient
 	{
-		public IFlurlRequest GetBuildUrl(string jobName, int buildNumber) => GetJobUrl().AppendPathSegment(jobName).AppendPathSegment(buildNumber);
+		private IFlurlRequest GetBuildUrl(string jobName, int buildNumber) => GetJobUrl().AppendPathSegment(jobName).AppendPathSegment(buildNumber);
 
-		public IFlurlRequest GetBuildUrl(string jobName, int buildNumber, string path) => GetBuildUrl(jobName, buildNumber).AppendPathSegment(path);
+		private IFlurlRequest GetBuildUrl(string jobName, int buildNumber, string path) => GetBuildUrl(jobName, buildNumber).AppendPathSegment(path);
 
 		public async Task<string> GetBuildNumberAsync(string jobName, int buildNumber)
 		{

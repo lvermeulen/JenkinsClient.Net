@@ -9,12 +9,12 @@ namespace JenkinsClient.Net
 {
 	public partial class JenkinsClient
 	{
-		public IFlurlRequest GetJobUrl() => GetBaseUrl().AppendPathSegment("job");
+		private IFlurlRequest GetJobUrl() => GetBaseUrl().AppendPathSegment("job");
 
 		// ReSharper disable once CoVariantArrayConversion
-		public IFlurlRequest GetJobUrl(params string[] paths) => GetJobUrl().AppendPathSegments(paths);
+		private IFlurlRequest GetJobUrl(params string[] paths) => GetJobUrl().AppendPathSegments(paths);
 
-		public IFlurlRequest GetJobsApiUrl(string url) => GetBaseUrl(url, "api/json");
+		private IFlurlRequest GetJobsApiUrl(string url) => GetBaseUrl(url, "api/json");
 
 		public async Task<IEnumerable<Job>> GetJobsAsync()
 		{

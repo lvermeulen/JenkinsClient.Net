@@ -10,13 +10,13 @@ namespace JenkinsClient.Net
 {
 	public partial class JenkinsClient
 	{
-		public IFlurlRequest GetSystemUrl() => GetBaseUrl();
+		private IFlurlRequest GetSystemUrl() => GetBaseUrl();
 
-		public IFlurlRequest GetSystemUrl(string path) => GetSystemUrl().AppendPathSegment(path);
+		private IFlurlRequest GetSystemUrl(string path) => GetSystemUrl().AppendPathSegment(path);
 
-		public IFlurlRequest GetSystemApiUrl() => GetSystemUrl().AppendPathSegment("api/json");
+		private IFlurlRequest GetSystemApiUrl() => GetSystemUrl().AppendPathSegment("api/json");
 
-		public IFlurlRequest GetSystemApiUrl(string path) => GetSystemUrl().AppendPathSegments(path, "api/json");
+		private IFlurlRequest GetSystemApiUrl(string path) => GetSystemUrl().AppendPathSegments(path, "api/json");
 
 		public async Task<SystemInformation> GetSystemInformationAsync()
 		{

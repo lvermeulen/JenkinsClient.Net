@@ -7,7 +7,7 @@ namespace JenkinsClient.Net
 {
 	public partial class JenkinsClient
 	{
-		public IFlurlRequest GetBuildQueueUrl() => GetBaseUrl().AppendPathSegment("queue").AppendPathSegment("api/json");
+		private IFlurlRequest GetBuildQueueUrl() => GetBaseUrl().AppendPathSegment("queue").AppendPathSegment("api/json");
 
 		public async Task<BuildQueue> GetBuildQueueAsync()
 		{
